@@ -71,6 +71,12 @@
                   const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
                   delete pkg.devDependencies;
                   delete pkg.scripts;
+                  // typescript is a peerDependency of vite-plus-core used by 'vp pack --dts'.
+                  // In a normal npm install it resolves from the project's node_modules, but
+                  // when vite-plus lives in the Nix store the CJS require() cannot traverse
+                  // up to the project directory.  Pinning it here ensures it is present in
+                  // the package's own node_modules so store-relative require() succeeds.
+                  pkg.dependencies['typescript'] = '^5.0.0 || ^6.0.0';
                   fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
                 "
 
@@ -91,7 +97,7 @@
 
               outputHashMode = "recursive";
               outputHashAlgo = "sha256";
-              outputHash = "sha256-r+JSbywCN1mtI1KfHXxi0d57aNsi0HW9zCdO1Y+gIAQ=";
+              outputHash = "sha256-gsMFl6xhJk6o971sOqn2kmiOB7SMBYp2KH5wubfqe8U=";
             };
           in
           pkgs.buildNpmPackage {
@@ -103,12 +109,23 @@
             # callPackage context that isn't in the binary cache and must be compiled
             # from source (~60 min).
             nodejs = pkgs.nodejs;
+            nativeBuildInputs = [ pkgs.makeWrapper ];
             postPatch = ''
               cp ${prepared}/package.json      package.json
               cp ${prepared}/package-lock.json package-lock.json
             '';
-            npmDepsHash = "sha256-oBjJF5FQCebsvKi76YcSlsUJWTT7G5xM4jspu+aIKdE=";
+            npmDepsHash = "sha256-Qi1sLjAh2Tt3BGOETUj2f97N6wDJ9aAWNVcx7O6SDq4=";
             dontNpmBuild = true; # dist/ is pre-built in the npm tarball
+            # Wrap every binary so that $out/bin is prepended to PATH before
+            # execution. This ensures that vp-internal child-process spawns
+            # (e.g. `vp migrate` → spawn("vp", ["install"])) can locate the
+            # sibling binaries (vp, oxlint, oxfmt) even when the user did not
+            # add the Nix store path to their shell PATH manually.
+            postInstall = ''
+              for bin in $out/bin/*; do
+                wrapProgram "$bin" --prefix PATH : "$out/bin"
+              done
+            '';
           };
       in
       {
