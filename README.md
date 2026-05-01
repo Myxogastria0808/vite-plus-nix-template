@@ -11,7 +11,7 @@ Add this flake as an input in your `flake.nix`:
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nix-template";
+    vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nixpkg";
   };
 
   outputs =

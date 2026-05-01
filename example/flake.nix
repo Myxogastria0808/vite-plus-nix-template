@@ -1,11 +1,11 @@
 {
-  description = "Example: using vite-plus-nix-template in your own project";
+  description = "Example: using vite-plus-nixpkg in your own project";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nix-template";
+    vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nixpkg";
   };
 
   outputs =
