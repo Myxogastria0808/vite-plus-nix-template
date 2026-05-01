@@ -18,10 +18,13 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          packages = [
-            pkgs.corepack
-            vite-plus
-          ];
+          packages =
+            with pkgs;
+            [
+              nodejs
+              corepack
+            ]
+            ++ [ vite-plus ];
         };
       }
     );

@@ -8,9 +8,12 @@ Add this flake as an input in your `flake.nix`:
 
 ```nix
 {
+  description = "Example: using vite-plus-nixpkg in your own project";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
     vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nixpkg";
   };
 
@@ -24,14 +27,18 @@ Add this flake as an input in your `flake.nix`:
       in
       {
         devShells.default = pkgs.mkShell {
-          packages = [
-            pkgs.corepack
-            vite-plus
-          ];
+          packages =
+            with pkgs;
+            [
+              nodejs
+              corepack
+            ]
+            ++ [ vite-plus ];
         };
       }
     );
 }
+
 ```
 
 See [`example/`](./example) for a working example.
