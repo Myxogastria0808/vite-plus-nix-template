@@ -1,5 +1,5 @@
 {
-  description = "vite-plus-nix-template";
+  description = "vite-plus-nixpkg";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
@@ -113,13 +113,7 @@
       in
       {
         packages.vite-plus = vite-plus;
-
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            corepack
-            vite-plus
-          ];
-        };
       }
     );
 }
+
