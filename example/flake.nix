@@ -5,9 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    # When using from GitHub, replace with:
-    #   vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nix-template";
-    vite-plus-nix.url = "path:..";
+    vite-plus-nix.url = "github:Myxogastria0808/vite-plus-nix-template";
   };
 
   outputs =
