@@ -112,14 +112,14 @@
           };
       in
       {
+        packages.vite-plus = vite-plus;
+
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             corepack
             vite-plus
           ];
-
         };
       }
     );
 }
-
